@@ -10,6 +10,21 @@ import (
 	"time"
 )
 
+type PlotData struct {
+	data []float64
+}
+
+func NewPlotData(data []float64) *PlotData {
+	plotData := PlotData{
+		data: data,
+	}
+	return &plotData
+}
+
+func (p PlotData) GetData() []float64 {
+	return p.data
+}
+
 func main() {
 
 	template := "%{time_total}"
@@ -33,15 +48,17 @@ func main() {
 
 		data = append(data, float)
 
-		fmt.Print("\033[H\033[2J")
-		graph := asciigraph.Plot(data, asciigraph.Height(10), asciigraph.Precision(6))
+		plotData := NewPlotData(data)
 
-		title := figure.NewFigure("CloudWatch.sh", "", true)
+		fmt.Print("\033[H\033[2J")
+		graph := asciigraph.Plot(plotData.GetData(), asciigraph.Height(10), asciigraph.Precision(6))
+
+		title := figure.NewFigure("Cloud Watch CLI", "", true)
 		title.Print()
 
-		fmt.Println("--------------------------------------------------------------------------------")
+		fmt.Println("------------------------------------------------------------------------------------------")
 		fmt.Println(graph)
-		fmt.Println("--------------------------------------------------------------------------------")
+		fmt.Println("------------------------------------------------------------------------------------------")
 
 	}
 }
