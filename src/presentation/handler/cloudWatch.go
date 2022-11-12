@@ -18,6 +18,6 @@ func NewCloudWatchHandler(cwu usecase.CloudWatchUseCase) CloudWatchHandler {
 	}
 }
 
-func (cwh cloudWatchHandler) RunCheckSpeedInsight(url string) {
+func (cwh *cloudWatchHandler) RunCheckSpeedInsight(url string) {
 	cwh.cloudWatchUseCase.CheckSpeedInsight(url)
 }

@@ -22,7 +22,7 @@ func NewCloudWatchUseCase(pr repository.PlotRepository, hrr repository.HttpReque
 	}
 }
 
-func (cwu cloudWatchUseCase) CheckSpeedInsight(url string) error {
+func (cwu *cloudWatchUseCase) CheckSpeedInsight(url string) error {
 
 	plotData := plotData.NewPlotData([]float64{})
 
