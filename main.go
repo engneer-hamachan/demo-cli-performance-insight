@@ -17,6 +17,8 @@ func main() {
 	data := []float64{}
 
 	for {
+
+		time.Sleep(time.Second * 3)
 		out, err := exec.Command("curl", url, "-w", template, "-o", "/dev/null").Output()
 		if err != nil {
 			fmt.Println(err)
@@ -27,11 +29,12 @@ func main() {
 		data = append(data, float)
 
 		fmt.Print("\033[H\033[2J")
-		fmt.Println(string(out))
 		fmt.Println(float)
 		graph := asciigraph.Plot(data, asciigraph.Height(10), asciigraph.Precision(6))
+
+		fmt.Println("-------------------------------------------------------")
 		fmt.Println(graph)
 		fmt.Println("-------------------------------------------------------")
-		time.Sleep(time.Second * 3)
+
 	}
 }
