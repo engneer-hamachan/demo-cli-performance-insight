@@ -42,7 +42,7 @@ func main() {
 
 		float, err := strconv.ParseFloat(string(out), 64)
 
-		if len(data) > 69 {
+		if len(data) > 78 {
 			data = data[1:]
 		}
 
@@ -59,6 +59,7 @@ func main() {
 		fmt.Println("------------------------------------------------------------------------------------------")
 		fmt.Println(graph)
 		fmt.Println("------------------------------------------------------------------------------------------")
+		fmt.Println("page speed watch now")
 
 	}
 }
