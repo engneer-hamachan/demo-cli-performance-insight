@@ -6,10 +6,10 @@ import (
 )
 
 type BenchMark struct {
-	benchMarkId       vo.UuId
-	label             vo.Label
-	startTimeStamp    vo.TimeStamp
-	endTimeStamp      vo.TimeStamp
+	benchMarkId    vo.UuId
+	label          vo.Label
+	startTimeStamp vo.TimeStamp
+	endTimeStamp   vo.TimeStamp
 }
 
 func New(benchMarkId string, label string, startTimeStamp int64, endTimeStamp int64) (*BenchMark, error) {
@@ -35,17 +35,16 @@ func New(benchMarkId string, label string, startTimeStamp int64, endTimeStamp in
 	}
 
 	benchMark := BenchMark{
-		benchMarkId:     *createdBenchMarkId,
-		label:       *createdLabel,
-		startTimeStamp:       *createdStartTimeStamp,
+		benchMarkId:    *createdBenchMarkId,
+		label:          *createdLabel,
+		startTimeStamp: *createdStartTimeStamp,
 		endTimeStamp:   *createdEndTimeStamp,
 	}
 	return &benchMark, nil
 
 }
 
-
-//Create Constructor
+// Create Constructor
 func Create(label string, startTimeStamp int64, endTimeStamp int64) (*BenchMark, error) {
 	benchMarkId := uuid.New().String()
 	benchMark, err := New(benchMarkId, label, startTimeStamp, endTimeStamp)
