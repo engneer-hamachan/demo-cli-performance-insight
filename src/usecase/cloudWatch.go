@@ -34,7 +34,7 @@ func (cwu *cloudWatchUseCase) CheckSpeedInsight(url string) error {
 			return err
 		}
 
-		plotData = plotData.Append(*speed)
+		plotData.Append(*speed)
 		cwu.plotRepository.PlotSpeedInsight(plotData)
 	}
 }
