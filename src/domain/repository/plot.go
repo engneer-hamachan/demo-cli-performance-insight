@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/guptarohit/asciigraph"
 	"main/src/domain/model/plotData"
 	"main/src/domain/model/storeData"
 )
@@ -8,5 +9,5 @@ import (
 type PlotRepository interface {
 	InsertStoreData(storeData *storeData.StoreData)
 	GetStoreData() []storeData.StoreData
-	PlotSpeedInsight(plotData *plotData.PlotData)
+	PlotSpeedInsight(plotData *plotData.PlotData, colors []asciigraph.AnsiColor)
 }

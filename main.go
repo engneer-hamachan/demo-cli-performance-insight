@@ -21,5 +21,5 @@ func main() {
 
 	//Run
 	router.GET("/plotter/:label/:data/:color", cloudWatchHandler.PlotData)
-	router.Run("localhost:8080")
+	router.Run("0.0.0.0:1988")
 }

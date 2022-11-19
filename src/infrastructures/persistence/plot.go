@@ -34,16 +34,27 @@ func (pp *plotPersistence) GetStoreData() []storeData.StoreData {
 	return result_store_datas
 }
 
-func (pp *plotPersistence) PlotSpeedInsight(data *plotData.PlotData) {
+func (pp *plotPersistence) PlotSpeedInsight(data *plotData.PlotData, colors []asciigraph.AnsiColor) {
 
 	fmt.Print("\033[H\033[2J")
-	graph := asciigraph.PlotMany(data.GetData(), asciigraph.Height(10), asciigraph.Precision(6))
+	graph :=
+		asciigraph.PlotMany(
+			data.GetData(),
+			asciigraph.Height(10),
+			asciigraph.Precision(6),
+			asciigraph.SeriesColors(
+				colors...,
+			),
+			asciigraph.LabelColor(
+				asciigraph.SandyBrown,
+			),
+		)
 
 	title := figure.NewFigure("Cloud Watch CLI", "", true)
 	title.Print()
 
-	fmt.Println("------------------------------------------------------------------------------------------")
+	fmt.Println("---------------------------------------------------------------------------------------------------------")
 	fmt.Println(graph)
-	fmt.Println("------------------------------------------------------------------------------------------")
+	fmt.Println("---------------------------------------------------------------------------------------------------------")
 	fmt.Println("page speed watch now")
 }
