@@ -40,7 +40,7 @@ func (pp *plotPersistence) PlotSpeedInsight(data *plotData.PlotData, colors []as
 	graph :=
 		asciigraph.PlotMany(
 			data.GetData(),
-			asciigraph.Height(10),
+			asciigraph.Height(8),
 			asciigraph.Precision(6),
 			asciigraph.SeriesColors(
 				colors...,
@@ -56,5 +56,4 @@ func (pp *plotPersistence) PlotSpeedInsight(data *plotData.PlotData, colors []as
 	fmt.Println("---------------------------------------------------------------------------------------------------------")
 	fmt.Println(graph)
 	fmt.Println("---------------------------------------------------------------------------------------------------------")
-	fmt.Println("page speed watch now")
 }
