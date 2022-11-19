@@ -1,40 +1,51 @@
 package usecase
 
 import (
+	"fmt"
 	"main/src/domain/model/plotData"
+	"main/src/domain/model/storeData"
 	"main/src/domain/repository"
-	"time"
 )
 
 type CloudWatchUseCase interface {
-	CheckSpeedInsight(url string) error
+	StoreData(label string, data float64, color string) error
 }
 
 type cloudWatchUseCase struct {
-	plotRepository        repository.PlotRepository
-	httpRequestRepository repository.HttpRequestRepository
+	plotRepository repository.PlotRepository
 }
 
-func NewCloudWatchUseCase(pr repository.PlotRepository, hrr repository.HttpRequestRepository) CloudWatchUseCase {
+func NewCloudWatchUseCase(pr repository.PlotRepository) CloudWatchUseCase {
 	return &cloudWatchUseCase{
-		plotRepository:        pr,
-		httpRequestRepository: hrr,
+		plotRepository: pr,
 	}
 }
 
-func (cwu *cloudWatchUseCase) CheckSpeedInsight(url string) error {
+func (cwu *cloudWatchUseCase) StoreData(label string, data float64, color string) error {
+	store_data := storeData.NewStoreData(
+		label,
+		data,
+		color,
+	)
 
-	plotData := plotData.NewPlotData([]float64{})
+	cwu.plotRepository.InsertStoreData(store_data)
+	store_datas := cwu.plotRepository.GetStoreData()
+	fmt.Println(store_datas)
+	m := map[string][]float64{}
 
-	for {
-		time.Sleep(time.Second * 1)
-
-		speed, err := cwu.httpRequestRepository.GetSiteSpeed(url)
-		if err != nil {
-			return err
-		}
-
-		plotData.Append(*speed)
-		cwu.plotRepository.PlotSpeedInsight(plotData)
+	for _, d := range store_datas {
+		m[d.GetLabel()] = append(m[d.GetLabel()], d.GetData())
 	}
+
+	fmt.Println(m)
+
+	plotData := plotData.NewPlotData([][]float64{})
+
+	for _, v := range m {
+		plotData.Append(v)
+	}
+
+	cwu.plotRepository.PlotSpeedInsight(plotData)
+
+	return nil
 }

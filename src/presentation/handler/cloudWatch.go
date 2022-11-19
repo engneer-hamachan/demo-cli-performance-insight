@@ -1,11 +1,15 @@
 package handler
 
 import (
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"main/src/usecase"
+	"net/http"
+	"strconv"
 )
 
 type CloudWatchHandler interface {
-	RunCheckSpeedInsight(url string)
+	PlotData(c *gin.Context)
 }
 
 type cloudWatchHandler struct {
@@ -18,6 +22,15 @@ func NewCloudWatchHandler(cwu usecase.CloudWatchUseCase) CloudWatchHandler {
 	}
 }
 
-func (cwh *cloudWatchHandler) RunCheckSpeedInsight(url string) {
-	cwh.cloudWatchUseCase.CheckSpeedInsight(url)
+func (cwh *cloudWatchHandler) PlotData(c *gin.Context) {
+
+	label := c.Param("label")
+	data, _ := strconv.ParseFloat(c.Param("data"), 64)
+	color := c.Param("color")
+
+	fmt.Println(data)
+
+	cwh.cloudWatchUseCase.StoreData(label, float64(data), color)
+
+	c.IndentedJSON(http.StatusOK, 1)
 }
