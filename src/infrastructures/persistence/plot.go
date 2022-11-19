@@ -26,12 +26,40 @@ func (pp *plotPersistence) InsertStoreData(storeData *storeData.StoreData) {
 	pp.Conn.Save(&save_store_data)
 }
 
-func (pp *plotPersistence) GetStoreData() []storeData.StoreData {
+func (pp *plotPersistence) GetStoreData() (*plotData.PlotData, []asciigraph.AnsiColor) {
 	var store_datas dto.StoreDatas
 	pp.Conn.Table("store_data").Order("data").Find(&store_datas.Data)
 	result_store_datas := dto.AdaptStoreDatas(&store_datas)
 
-	return result_store_datas
+	data_map := map[string][]float64{}
+	color_map := map[string]asciigraph.AnsiColor{}
+
+	for _, d := range result_store_datas {
+		data_map[d.GetLabel()] = append(data_map[d.GetLabel()], d.GetData())
+		color_map[d.GetLabel()] = asciigraph.ColorNames[d.GetColor()]
+	}
+
+	plotData := plotData.NewPlotData([][]float64{})
+	plotColor := []asciigraph.AnsiColor{}
+
+	for k, v := range data_map {
+		ct := 1
+		data := []float64{}
+		start_time := float64(0)
+
+		for _, i := range v {
+			if ct%2 == 0 {
+				data = append(data, i-start_time)
+			} else {
+				start_time = i
+			}
+			ct += 1
+		}
+		plotData.Append(data)
+		plotColor = append(plotColor, color_map[k])
+	}
+
+	return plotData, plotColor
 }
 
 func (pp *plotPersistence) PlotSpeedInsight(data *plotData.PlotData, colors []asciigraph.AnsiColor) {

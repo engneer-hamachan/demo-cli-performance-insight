@@ -8,6 +8,6 @@ import (
 
 type PlotRepository interface {
 	InsertStoreData(storeData *storeData.StoreData)
-	GetStoreData() []storeData.StoreData
+	GetStoreData() (*plotData.PlotData, []asciigraph.AnsiColor)
 	PlotSpeedInsight(plotData *plotData.PlotData, colors []asciigraph.AnsiColor)
 }
