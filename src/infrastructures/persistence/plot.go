@@ -28,7 +28,7 @@ func (pp *plotPersistence) InsertStoreData(storeData *storeData.StoreData) {
 
 func (pp *plotPersistence) GetStoreData() []storeData.StoreData {
 	var store_datas dto.StoreDatas
-	pp.Conn.Table("store_data").Find(&store_datas.Data)
+	pp.Conn.Table("store_data").Order("data").Find(&store_datas.Data)
 	result_store_datas := dto.AdaptStoreDatas(&store_datas)
 
 	return result_store_datas
@@ -40,7 +40,7 @@ func (pp *plotPersistence) PlotSpeedInsight(data *plotData.PlotData, colors []as
 	graph :=
 		asciigraph.PlotMany(
 			data.GetData(),
-			asciigraph.Height(8),
+			asciigraph.Height(15),
 			asciigraph.Precision(6),
 			asciigraph.SeriesColors(
 				colors...,

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"main/src/usecase"
 	"net/http"
@@ -27,8 +26,6 @@ func (cwh *cloudWatchHandler) PlotData(c *gin.Context) {
 	label := c.Param("label")
 	data, _ := strconv.ParseFloat(c.Param("data"), 64)
 	color := c.Param("color")
-
-	fmt.Println(data)
 
 	cwh.cloudWatchUseCase.StoreData(label, float64(data), color)
 

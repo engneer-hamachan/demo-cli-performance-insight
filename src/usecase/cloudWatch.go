@@ -40,13 +40,23 @@ func (cwu *cloudWatchUseCase) StoreData(label string, data float64, color string
 		mc[d.GetLabel()] = asciigraph.ColorNames[d.GetColor()]
 	}
 
-	fmt.Println(m)
-
 	plotData := plotData.NewPlotData([][]float64{})
 	colorData := []asciigraph.AnsiColor{}
 
 	for k, v := range m {
-		plotData.Append(v)
+		ct := 1
+		mm := []float64{}
+		start_time := float64(0)
+		fmt.Println(v)
+		for _, i := range v {
+			if ct%2 == 0 {
+				mm = append(mm, i-start_time)
+			} else {
+				start_time = i
+			}
+			ct += 1
+		}
+		plotData.Append(mm)
 		colorData = append(colorData, mc[k])
 	}
 
