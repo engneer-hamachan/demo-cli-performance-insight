@@ -27,6 +27,7 @@ func (pp *plotPersistence) InsertStoreData(storeData *storeData.StoreData) {
 }
 
 func (pp *plotPersistence) GetStoreData() (*plotData.PlotData, []asciigraph.AnsiColor) {
+
 	var store_datas dto.StoreDatas
 	pp.Conn.Table("store_data").Order("data").Find(&store_datas.Data)
 	result_store_datas := dto.AdaptStoreDatas(&store_datas)
@@ -44,7 +45,7 @@ func (pp *plotPersistence) GetStoreData() (*plotData.PlotData, []asciigraph.Ansi
 
 	for k, v := range data_map {
 		ct := 1
-		data := []float64{}
+		data := []float64{0}
 		start_time := float64(0)
 
 		for _, i := range v {
@@ -68,7 +69,7 @@ func (pp *plotPersistence) PlotSpeedInsight(data *plotData.PlotData, colors []as
 	graph :=
 		asciigraph.PlotMany(
 			data.GetData(),
-			asciigraph.Height(15),
+			asciigraph.Height(9),
 			asciigraph.Precision(6),
 			asciigraph.SeriesColors(
 				colors...,
