@@ -26,7 +26,7 @@ func (pp *plotPersistence) InsertStoreData(storeData *storeData.StoreData) {
 	pp.Conn.Save(&save_store_data)
 }
 
-func (pp *plotPersistence) GetPlotData() (*plotData.PlotData, []asciigraph.AnsiColor) {
+func (pp *plotPersistence) GetPlotData() *plotData.PlotData {
 
 	store_datas := dto.StoreDatas{}
 
@@ -34,15 +34,14 @@ func (pp *plotPersistence) GetPlotData() (*plotData.PlotData, []asciigraph.AnsiC
 	result_store_datas := dto.AdaptStoreDatas(&store_datas)
 
 	data_map := map[string][]float64{}
-	color_map := map[string]asciigraph.AnsiColor{}
+	color_map := map[string]string{}
 
 	for _, d := range result_store_datas {
 		data_map[d.GetLabel()] = append(data_map[d.GetLabel()], d.GetData())
-		color_map[d.GetLabel()] = asciigraph.ColorNames[d.GetColor()]
+		color_map[d.GetLabel()] = d.GetColor()
 	}
 
-	plot_data := plotData.NewPlotData([][]float64{})
-	plot_color := []asciigraph.AnsiColor{}
+	plot_data := plotData.NewPlotData([][]float64{}, []string{})
 
 	for k, v := range data_map {
 		ct := 1
@@ -57,14 +56,19 @@ func (pp *plotPersistence) GetPlotData() (*plotData.PlotData, []asciigraph.AnsiC
 			}
 			ct += 1
 		}
-		plot_data.Append(data)
-		plot_color = append(plot_color, color_map[k])
+		plot_data.Append(data, color_map[k])
 	}
 
-	return plot_data, plot_color
+	return plot_data
 }
 
-func (pp *plotPersistence) PlotGraph(data *plotData.PlotData, plot_color []asciigraph.AnsiColor) {
+func (pp *plotPersistence) PlotGraph(data *plotData.PlotData) {
+
+	colors := []asciigraph.AnsiColor{}
+
+	for _, color := range data.GetColor() {
+		colors = append(colors, asciigraph.ColorNames[color])
+	}
 
 	graph :=
 		asciigraph.PlotMany(
@@ -72,7 +76,7 @@ func (pp *plotPersistence) PlotGraph(data *plotData.PlotData, plot_color []ascii
 			asciigraph.Height(9),
 			asciigraph.Precision(6),
 			asciigraph.SeriesColors(
-				plot_color...,
+				colors...,
 			),
 			asciigraph.LabelColor(
 				asciigraph.SandyBrown,

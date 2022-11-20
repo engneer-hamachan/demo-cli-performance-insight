@@ -29,7 +29,7 @@ func (pu *plotterUseCase) RecieveData(label string, data float64, color string) 
 
 	pu.plotRepository.InsertStoreData(store_data)
 
-	plot_data, plot_color := pu.plotRepository.GetPlotData()
+	plot_data := pu.plotRepository.GetPlotData()
 
-	pu.plotRepository.PlotGraph(plot_data, plot_color)
+	pu.plotRepository.PlotGraph(plot_data)
 }
