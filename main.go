@@ -16,10 +16,10 @@ func main() {
 
 	//DI
 	plotRepository := persistence.NewPlotPersistence(db)
-	cloudWatchUseCase := usecase.NewCloudWatchUseCase(plotRepository)
-	cloudWatchHandler := handler.NewCloudWatchHandler(cloudWatchUseCase)
+	plotterUseCase := usecase.NewPlotterUseCase(plotRepository)
+	plotterHandler := handler.NewPlotterHandler(plotterUseCase)
 
 	//Run
-	router.GET("/plotter/:label/:data/:color", cloudWatchHandler.PlotData)
+	router.GET("/plotter/:label/:data/:color", plotterHandler.RecieveData)
 	router.Run("0.0.0.0:1988")
 }

@@ -5,21 +5,21 @@ import (
 	"main/src/domain/repository"
 )
 
-type CloudWatchUseCase interface {
-	StoreData(label string, data float64, color string) error
+type PlotterUseCase interface {
+	RecieveData(label string, data float64, color string)
 }
 
-type cloudWatchUseCase struct {
+type plotterUseCase struct {
 	plotRepository repository.PlotRepository
 }
 
-func NewCloudWatchUseCase(pr repository.PlotRepository) CloudWatchUseCase {
-	return &cloudWatchUseCase{
+func NewPlotterUseCase(pr repository.PlotRepository) PlotterUseCase {
+	return &plotterUseCase{
 		plotRepository: pr,
 	}
 }
 
-func (cwu *cloudWatchUseCase) StoreData(label string, data float64, color string) error {
+func (pu *plotterUseCase) RecieveData(label string, data float64, color string) {
 
 	store_data := storeData.NewStoreData(
 		label,
@@ -27,11 +27,9 @@ func (cwu *cloudWatchUseCase) StoreData(label string, data float64, color string
 		color,
 	)
 
-	cwu.plotRepository.InsertStoreData(store_data)
+	pu.plotRepository.InsertStoreData(store_data)
 
-	plotData, plotColor := cwu.plotRepository.GetStoreData()
+	plot_data, plot_color := pu.plotRepository.GetPlotData()
 
-	cwu.plotRepository.PlotSpeedInsight(plotData, plotColor)
-
-	return nil
+	pu.plotRepository.PlotGraph(plot_data, plot_color)
 }
