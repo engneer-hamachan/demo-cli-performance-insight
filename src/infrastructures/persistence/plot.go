@@ -85,7 +85,7 @@ func (pp *plotPersistence) PlotGraph(data *plotData.PlotData) {
 
 	fmt.Print("\033[H\033[2J")
 
-	title := figure.NewFigure("Cloud Watch CLI", "", true)
+	title := figure.NewFigure("Speed Plotter", "", true)
 	title.Print()
 
 	fmt.Println("---------------------------------------------------------------------------------------------------------")
