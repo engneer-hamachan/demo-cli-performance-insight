@@ -28,7 +28,8 @@ func (pp *plotPersistence) InsertStoreData(storeData *storeData.StoreData) {
 
 func (pp *plotPersistence) GetPlotData() (*plotData.PlotData, []asciigraph.AnsiColor) {
 
-	var store_datas dto.StoreDatas
+	store_datas := dto.StoreDatas{}
+
 	pp.Conn.Table("store_data").Order("data").Find(&store_datas.Data)
 	result_store_datas := dto.AdaptStoreDatas(&store_datas)
 
@@ -63,21 +64,22 @@ func (pp *plotPersistence) GetPlotData() (*plotData.PlotData, []asciigraph.AnsiC
 	return plot_data, plot_color
 }
 
-func (pp *plotPersistence) PlotGraph(data *plotData.PlotData, colors []asciigraph.AnsiColor) {
+func (pp *plotPersistence) PlotGraph(data *plotData.PlotData, plot_color []asciigraph.AnsiColor) {
 
-	fmt.Print("\033[H\033[2J")
 	graph :=
 		asciigraph.PlotMany(
 			data.GetData(),
 			asciigraph.Height(9),
 			asciigraph.Precision(6),
 			asciigraph.SeriesColors(
-				colors...,
+				plot_color...,
 			),
 			asciigraph.LabelColor(
 				asciigraph.SandyBrown,
 			),
 		)
+
+	fmt.Print("\033[H\033[2J")
 
 	title := figure.NewFigure("Cloud Watch CLI", "", true)
 	title.Print()
