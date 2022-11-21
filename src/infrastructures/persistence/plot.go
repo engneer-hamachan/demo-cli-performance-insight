@@ -73,7 +73,7 @@ func (pp *plotPersistence) PlotGraph(data *plotData.PlotData) {
 	graph :=
 		asciigraph.PlotMany(
 			data.GetData(),
-			asciigraph.Height(9),
+			asciigraph.Height(10),
 			asciigraph.Precision(6),
 			asciigraph.SeriesColors(
 				colors...,
