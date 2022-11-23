@@ -73,7 +73,7 @@ func (pp *plotPersistence) PlotGraph(data *plotData.PlotData) {
 	graph :=
 		asciigraph.PlotMany(
 			data.GetData(),
-			asciigraph.Width(80),
+			asciigraph.Width(70),
 			asciigraph.Height(10),
 			asciigraph.Precision(8),
 			asciigraph.SeriesColors(
@@ -89,7 +89,7 @@ func (pp *plotPersistence) PlotGraph(data *plotData.PlotData) {
 	title := figure.NewFigure("Speed Plotter", "", true)
 	title.Print()
 
-	fmt.Println("----------------------------------------------------------------------------------------------")
+	fmt.Println("--------------------------------------------------------------------------------------")
 	fmt.Println(graph)
-	fmt.Println("----------------------------------------------------------------------------------------------")
+	fmt.Println("--------------------------------------------------------------------------------------")
 }
