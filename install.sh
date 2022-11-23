@@ -1,2 +1,2 @@
 go build
-mv main /usr/local/bin/plotter
+sudo mv main /usr/local/bin/speed-plotter

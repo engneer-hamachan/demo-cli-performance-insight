@@ -6,7 +6,6 @@ import (
 )
 
 type StoreData struct {
-	ID        int
 	Label     string
 	Data      float64
 	Color     string
